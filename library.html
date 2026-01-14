@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>APRICITY!</title>
+  <link rel="icon" type="image/x-icon" href="images/websitesslogo.ico">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="css/bootstrap-4.3.1.css">
+
+  <style>
+    /* ===============================
+       BASE / BACKGROUND
+    =============================== */
+    body {
+      background-image: url("images/BACKGROUND APRICITY.png");
+      background-repeat: repeat;
+      margin: 0;
+      padding: 0;
+    }
+
+    .fade-in {
+      animation: fadeIn 1.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ===============================
+       NAVBAR (MATCHES INDEX)
+    =============================== */
+    .scrapbook-nav {
+      padding: 30px 0;
+    }
+
+    .logo-img {
+      max-width: 180px;
+    }
+
+    .nav-img {
+      max-width: 160px;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-img:hover {
+      transform: scale(1.1) rotate(-1deg);
+    }
+
+    @media (max-width: 768px) {
+      .logo-img { max-width: 120px; }
+      .nav-img { max-width: 90px; }
+    }
+
+    /* ===============================
+       PAGE HEADER
+    =============================== */
+    .library-title {
+      max-width: 950px;
+      margin: 10px auto 20px;
+      display: block;
+    }
+
+    .library-subtitle {
+      font-family: Georgia, serif;
+      font-size: 32px;
+      font-weight: bold;
+      color: #55823b;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    /* ===============================
+       SECTIONS
+    =============================== */
+    .section-title {
+      max-width: 450px;
+      margin: 80px auto 30px;
+      display: block;
+    }
+
+    .lib-section {
+      margin-bottom: 40px;
+    }
+
+    /* ===============================
+       SCRAPBOOK CARD
+    =============================== */
+    .scrap-card {
+      position: relative;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    /* tape only */
+    .scrap-card::before {
+      content: "";
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      width: 110px;
+      height: 32px;
+      background: rgba(255, 243, 205, 0.75);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+      z-index: 2;
+    }
+
+    .lib-icon {
+      max-width: 200px;
+      transition: transform 0.25s ease;
+    }
+
+    .lib-icon:hover {
+      transform: translateY(-6px) rotate(1deg);
+    }
+
+    /* ===============================
+       LOOSE, HUMAN SPACING
+    =============================== */
+    .offset-low    { transform: translateY(10px); }
+    .offset-mid    { transform: translateY(-8px); }
+    .offset-high   { transform: translateY(18px); }
+
+    /* ===============================
+       FOOTER
+    =============================== */
+    .footer-img {
+      max-width: 900px;
+      margin: 80px auto 40px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="fade-in">
+
+<!-- ===============================
+     NAVBAR
+=============================== -->
+<div class="container scrapbook-nav">
+  <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center gap-4">
+
+    <a href="index.html">
+      <img src="images/logo.png" class="logo-img" alt="Apricity Logo">
+    </a>
+
+    <div class="d-flex align-items-center justify-content-center gap-3 flex-wrap">
+      <a href="index.html"><img src="images/home.off.png" class="nav-img" alt=""></a>
+      <a href="about.html"><img src="images/About.off.png" class="nav-img" alt=""></a>
+      <a href="library.html"><img src="images/library.off.png" class="nav-img" alt=""></a>
+      <a href="game.html"><img src="images/Games.off.png" class="nav-img" alt=""></a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===============================
+     HEADER
+=============================== -->
+<img src="images/Library1.png" class="library-title" alt="">
+<div class="library-subtitle">
+  Which vocabulary do you want to learn today?
+</div>
+
+<!-- ===============================
+     DAILY / SCHOOL / FOOD
+=============================== -->
+<img src="images/lib1.gif" class="section-title" alt="">
+
+<div class="container lib-section">
+  <div class="row justify-content-center">
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-low">
+      <a href="daily.html">
+        <img src="images/Daily Life off.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-mid">
+      <a href="school.html">
+        <img src="images/School Life off.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-high">
+      <a href="food.html">
+        <img src="images/Foodoff.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===============================
+     WEATHER / ANIMALS / PLACES
+=============================== -->
+<img src="images/lib2.gif" class="section-title" alt="">
+
+<div class="container lib-section">
+  <div class="row justify-content-center">
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-mid">
+      <a href="weather.html">
+        <img src="images/Weaoff.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-high">
+      <a href="ANIMALS.html">
+        <img src="images/Anioff.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-low">
+      <a href="places.html">
+        <img src="images/Placeoff.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===============================
+     VERBS / ADJECTIVES / IDIOMS
+=============================== -->
+<img src="images/lib3.gif" class="section-title" alt="">
+
+<div class="container lib-section">
+  <div class="row justify-content-center">
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-high">
+      <a href="verbs.html">
+        <img src="images/Verbsoff.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-low">
+      <a href="adjectives.html">
+        <img src="images/Adjoff.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12 scrap-card offset-mid">
+      <a href="idioms.html">
+        <img src="images/IDIOFF.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===============================
+     SLANG
+=============================== -->
+<img src="images/lib4.gif" class="section-title" alt="">
+
+<div class="container lib-section">
+  <div class="row justify-content-center">
+
+    <div class="col-md-6 col-12 scrap-card offset-low">
+      <a href="slangsid.html">
+        <img src="images/slag1.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+    <div class="col-md-6 col-12 scrap-card offset-high">
+      <a href="slangsen.html">
+        <img src="images/eng1.png" class="lib-icon img-fluid" alt="">
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===============================
+     FOOTER
+=============================== -->
+<img src="images/foooter.png" class="footer-img" alt="" usemap="#Map">
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap-4.3.1.js"></script>
+
+<map name="Map">
+  <area shape="rect" coords="32,40,216,98" href="https://www.youtube.com/@apricitywebsite">
+  <area shape="rect" coords="239,38,321,108" href="https://www.instagram.com/luvodii_/">
+  <area shape="rect" coords="553,38,621,116" href="https://forms.gle/ZKCkpAFPexDz5mCo8">
+</map>
+
+</body>
+</html>
+

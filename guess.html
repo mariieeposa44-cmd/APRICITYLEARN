@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Word 🌿</title>
+	<link rel="icon" type="image/x-icon" href="file:///C|/Users/Roy/Downloads/WEBSITE/images/websitesslogo.ico">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url(images/BACKGROUND%20APRICITY.png);
+    background-repeat: repeat;
+      color: #2d4739;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .game-container {
+      background-color: #d6f5d6;
+      padding: 2rem 3rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 370px;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      color: #3e8e41;
+    }
+
+    .definition {
+      font-size: 1.1rem;
+      margin: 1.2rem 0;
+      color: #356b35;
+    }
+
+    input {
+      padding: 0.6rem;
+      width: 80%;
+      font-size: 1rem;
+      border: 2px solid #9bd09b;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      margin: 0.4rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #6fcf97;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #5bbf87;
+    }
+
+    .score, .timer, .level {
+      font-weight: bold;
+      margin-top: 1rem;
+      color: #2f5f2f;
+    }
+  </style>
+</head>
+<body>
+<div class="game-container">
+  <h1>Guess the Word 🌿</h1>
+  <audio autoplay="autoplay" loop="loop">
+    <source src="GAME3.mp3" type="audio/mp3">
+  </audio>
+
+  <div id="definition" class="definition"></div> <!-- ✅ Add this line -->
+
+  <input type="text" id="guessInput" placeholder="Your guess..." />
+  <div>
+    <button id="submitBtn">Submit</button>
+    <button id="skipBtn">Skip</button>
+    <button id="hintBtn">Hint</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+  <div class="level">Level: <span id="level">Easy</span></div>
+  <div class="score">Score: <span id="score">0</span></div>
+  <div class="timer">Time: <span id="timer">120</span>s</div>
+</div>
+
+  <script>
+  const wordSets = {
+    easy: [
+      { word: 'snack', definition: 'A light meal, usually eaten between main meals.' },
+      { word: 'rice', definition: 'A small white grain that is a staple food in many Asian countries.' },
+      { word: 'apple', definition: 'A round fruit that keeps the doctor away.' },
+      { word: 'chair', definition: 'Something you sit on.' },
+      { word: 'book', definition: 'A collection of written or printed pages.' },
+      { word: 'dog', definition: 'A loyal animal often called man’s best friend.' },
+      { word: 'pencil', definition: 'A tool used for writing or drawing.' },
+      { word: 'school', definition: 'A place where students go to learn.' },
+      { word: 'music', definition: 'A combination of sounds that can be enjoyed or danced to.' },
+      { word: 'teacher', definition: 'A person who helps students learn new things.' },
+      { word: 'water', definition: 'A clear liquid that all living things need to survive.' },
+      { word: 'friend', definition: 'Someone you like and enjoy spending time with.' },
+      { word: 'sun', definition: 'The bright star that gives us light and warmth.' },
+      { word: 'computer', definition: 'A device used to work, play, or find information.' },
+      { word: 'banana', definition: 'A long yellow fruit that monkeys love to eat.' },
+      { word: 'desk', definition: 'A table used for studying or working.' },
+      { word: 'cat', definition: 'A small furry animal that loves to nap and chase mice.' },
+      { word: 'car', definition: 'A vehicle used to travel on roads.' },
+      { word: 'flower', definition: 'A colorful plant part that often smells nice.' },
+      { word: 'ball', definition: 'A round object used in many games and sports.' },
+      { word: 'milk', definition: 'A white drink that comes from cows and is full of calcium.' },
+      { word: 'clock', definition: 'A tool that shows the time.' },
+      { word: 'bread', definition: 'A baked food made from flour, often eaten for breakfast.' },
+      { word: 'rain', definition: 'Water that falls from the sky.' },
+      { word: 'tree', definition: 'A tall plant with a trunk, branches, and leaves.' },
+      { word: 'fish', definition: 'An animal that lives and swims in water.' },
+      { word: 'house', definition: 'A building where people live.' },
+      { word: 'phone', definition: 'A device used to call or message others.' },
+      { word: 'game', definition: 'An activity people play for fun.' },
+      { word: 'ice cream', definition: 'A cold, sweet dessert that melts in your mouth.' }
+    ],
+    medium: [
+      { word: 'freedom', definition: 'The state of being free from control or oppression.' },
+      { word: 'whisper', definition: 'To speak very softly.' },
+      { word: 'mirror', definition: 'A surface that reflects an image.' },
+      { word: 'puzzle', definition: 'A game designed to test ingenuity or knowledge.' },
+      { word: 'journey', definition: 'An act of traveling from one place to another.' },
+      { word: 'courage', definition: 'The ability to do something that frightens you.' },
+      { word: 'shadow', definition: 'A dark shape made when light is blocked by an object.' },
+      { word: 'memory', definition: 'The ability to remember past experiences or information.' },
+      { word: 'breeze', definition: 'A light and gentle wind.' },
+      { word: 'silence', definition: 'A state of complete quietness.' },
+      { word: 'victory', definition: 'The act of winning a competition or battle.' },
+      { word: 'dream', definition: 'Thoughts or images that happen during sleep or hopes for the future.' },
+      { word: 'balance', definition: 'An even distribution of weight or stability.' },
+      { word: 'talent', definition: 'A natural ability or skill.' },
+      { word: 'kindness', definition: 'The quality of being friendly and generous.' },
+      { word: 'storm', definition: 'A violent weather condition with strong wind and rain.' },
+      { word: 'laughter', definition: 'The sound or act of laughing.' },
+      { word: 'adventure', definition: 'An exciting or unusual experience.' },
+      { word: 'honesty', definition: 'The quality of being truthful and sincere.' },
+      { word: 'wisdom', definition: 'The ability to use knowledge and experience to make good decisions.' },
+      { word: 'silhouette', definition: 'The dark outline or shape of someone or something visible against a lighter background.' },
+      { word: 'emotion', definition: 'A strong feeling such as happiness, sadness, or anger.' },
+      { word: 'effort', definition: 'The use of physical or mental energy to do something.' },
+      { word: 'fortune', definition: 'A large amount of money or good luck.' },
+      { word: 'mystery', definition: 'Something that is difficult to understand or explain.' },
+      { word: 'danger', definition: 'The possibility of harm or injury.' },
+      { word: 'respect', definition: 'A feeling of admiration for someone or something.' },
+      { word: 'failure', definition: 'The lack of success in doing something.' },
+      { word: 'promise', definition: 'A declaration that one will do something or that something will happen.' }
+    ],
+    hard: [
+      { word: 'serendipity', definition: 'The occurrence of events by chance in a happy or beneficial way.' },
+      { word: 'eloquent', definition: 'Fluent or persuasive in speaking or writing.' },
+      { word: 'ambiguous', definition: 'Open to more than one interpretation.' },
+      { word: 'resilient', definition: 'Able to recover quickly from difficulty.' },
+      { word: 'meticulous', definition: 'Showing great attention to detail; very careful and precise.' },
+      { word: 'ephemeral', definition: 'Lasting for a very short time.' },
+      { word: 'inevitable', definition: 'Certain to happen; unavoidable.' },
+      { word: 'tranquility', definition: 'A state of peace and calm.' },
+      { word: 'empathy', definition: 'The ability to understand and share the feelings of another.' },
+      { word: 'nostalgia', definition: 'A sentimental longing for the past.' },
+      { word: 'vulnerable', definition: 'Easily hurt or affected emotionally or physically.' },
+      { word: 'oblivion', definition: 'The state of being forgotten or unaware.' },
+      { word: 'lucid', definition: 'Expressed clearly; easy to understand.' },
+      { word: 'magnificent', definition: 'Very beautiful or impressive.' },
+      { word: 'benevolent', definition: 'Well-meaning and kindly.' },
+      { word: 'melancholy', definition: 'A feeling of deep sadness or gentle sorrow.' },
+      { word: 'tenacious', definition: 'Holding tightly; not giving up easily.' },
+      { word: 'paradox', definition: 'A statement that seems contradictory but might be true.' },
+      { word: 'altruism', definition: 'The selfless concern for the well-being of others.' },
+      { word: 'vivid', definition: 'Producing strong, clear, and lifelike images in the mind.' },
+      { word: 'contemplate', definition: 'To think deeply about something for a long time.' },
+      { word: 'gratitude', definition: 'The quality of being thankful and appreciative.' },
+      { word: 'formidable', definition: 'Inspiring fear or respect through being powerful or intense.' },
+      { word: 'serenity', definition: 'The state of being calm, peaceful, and untroubled.' },
+      { word: 'epiphany', definition: 'A sudden realization or understanding of something important.' },
+      { word: 'perseverance', definition: 'Continued effort to achieve something despite difficulties.' },
+      { word: 'obscure', definition: 'Not easily understood; unclear or hidden.' },
+      { word: 'ethereal', definition: 'Extremely delicate and light, seeming too perfect for this world.' },
+      { word: 'catalyst', definition: 'Something that causes or speeds up change or action.' }
+    ]
+  };
+
+  let currentLevel = 'easy';
+  let currentWord = {};
+  let score = 0;
+  let time = 120;
+  let timerInterval;
+
+  const definitionElement = document.getElementById('definition');
+  const guessInput = document.getElementById('guessInput');
+  const scoreElement = document.getElementById('score');
+  const timerElement = document.getElementById('timer');
+  const levelElement = document.getElementById('level');
+
+  function newWord() {
+    const wordList = wordSets[currentLevel];
+    currentWord = wordList[Math.floor(Math.random() * wordList.length)];
+    definitionElement.textContent = currentWord.definition;
+    guessInput.value = '';
+    guessInput.focus();
+  }
+
+  function checkGuess() {
+    const guess = guessInput.value.toLowerCase().trim();
+    if (guess === currentWord.word) {
+      score += 10;
+      scoreElement.textContent = score;
+      if (score >= 40 && currentLevel === 'easy') {
+        currentLevel = 'medium';
+        levelElement.textContent = 'Medium';
+        alert('🌱 Level Up! You are now on Medium mode!');
+      } else if (score >= 80 && currentLevel === 'medium') {
+        currentLevel = 'hard';
+        levelElement.textContent = 'Hard';
+        alert('🌿 Level Up! You are now on Hard mode!');
+      }
+      newWord();
+    } else {
+      guessInput.value = '';
+    }
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      time--;
+      timerElement.textContent = time;
+      if (time <= 0) {
+        clearInterval(timerInterval);
+        alert(`⏰ Time's up! Final Score: ${score}`);
+        resetGame();
+      }
+    }, 1000);
+  }
+
+  function resetGame() {
+    score = 0;
+    time = 120;
+    currentLevel = 'easy';
+    scoreElement.textContent = score;
+    timerElement.textContent = time;
+    levelElement.textContent = 'Easy';
+    newWord();
+    startTimer();
+  }
+
+  document.getElementById('submitBtn').addEventListener('click', checkGuess);
+  document.getElementById('skipBtn').addEventListener('click', newWord);
+  document.getElementById('resetBtn').addEventListener('click', resetGame);
+  document.getElementById('hintBtn').addEventListener('click', () => {
+    alert(`Hint: The first letter is ${currentWord.word[0].toUpperCase()}`);
+  });
+
+  // ✅ Tambahkan fitur Enter untuk langsung submit
+  guessInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      checkGuess();
+    }
+  });
+
+  newWord();
+  startTimer();
+</script>
+
+	<br>
+	<table width="600">
+  <tbody>
+    <tr>
+      <td align="center" valign="middle"><a href="game.html"><img src="images/BACKTOWEB.png" width="375" height="200" alt=""/></a></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

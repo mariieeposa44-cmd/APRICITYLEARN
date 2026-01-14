@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indonesian Slangs Vocabulary</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-image: url(images/BACKGROUND%20APRICITY.png);
+    background-repeat: repeat;
+      text-align: center;
+      padding: 40px;
+      color: #4b2e05;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: 900;
+      margin-bottom: 25px;
+      color: #d96500;
+      text-shadow: 1px 1px #fff;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: 2px solid #d97b00;
+      width: 250px;
+      outline: none;
+      font-size: 1em;
+      background: #fff;
+    }
+
+    select {
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #d97b00;
+      font-size: 1em;
+      background: #fff;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      justify-items: center;
+    }
+
+    .card {
+      border: 2px solid #d97b00;
+      border-radius: 15px;
+      background-color: #ffe4c4;
+      padding: 15px;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+.fade-in-image { animation: fadeIn 2.5s; }
+		@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+    .card:hover {
+      background: #ffcf91;
+      transform: scale(1.05);
+    }
+
+    .word {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #a35400;
+      margin-bottom: 3px;
+    }
+
+    .translation {
+      font-size: 0.9em;
+      color: #6b3e00;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+
+    .image {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-bottom: 5px;
+    }
+
+    .clue {
+      font-size: 0.8em;
+      color: #4b2e05;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: #fffdf7;
+      color: #2d1b00;
+      padding: 30px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+
+    .modal-content img {
+      width: 40%;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 4px solid #d97b00;
+    }
+
+    .modal-text {
+      text-align: left;
+      flex: 1;
+    }
+
+    .modal h2 {
+      font-size: 2.5em;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: #d96500;
+    }
+
+    .modal h3 {
+      margin: 10px 0 5px;
+      color: #6b3e00;
+    }
+
+    .modal .pronounce {
+      background: #e3e0c8;
+      padding: 3px 8px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .modal strong {
+      color: #a35400;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <img src="11.png" width="650" height="275" alt=""/>
+	<div class="fade-in-image">
+<div class="controls">
+  <input type="text" id="search" placeholder="Search words..." />
+    <select id="sort">
+      <option value="asc">Sort A–Z</option>
+      <option value="desc">Sort Z–A</option>
+    </select>
+</div>
+
+  <div class="cards" id="wordList"></div>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-text">
+        <div class="close-btn" onclick="closeModal()">✕</div>
+        <p><small>category: <span id="category"></span></small></p>
+        <h2 id="word"></h2>
+        <p><i id="pronounce"></i> <span class="pronounce" onclick="playAudio()">🔊 audio</span></p>
+        <h3 id="translation"></h3>
+
+        <h4>Synonyms:</h4>
+        <p id="synonyms"></p>
+
+        <h4>Example sentences:</h4>
+        <ul id="examples"></ul>
+      </div>
+      <img id="modalImage" src="" alt="Word image">
+    </div>
+  </div>
+
+<script>
+    const words = [
+  { 
+    word: "gabut",
+    indonesian: "tidak ada kegiatan / bosan",
+    category: "Indonesian Slangs",
+    pronunciation: "gah-boot",
+    synonyms: ["bored", "doing nothing"],
+    examples: [
+      "Lagi gabut nih, gak ada kerjaan.",
+      "Dia nonton film karena gabut di rumah."
+    ],
+    image: "https://i.pinimg.com/736x/ba/d3/21/bad3219d2eea06fc5ed2273b6d6ecdfc.jpg"
+  },
+  { 
+    word: "baper",
+    indonesian: "terbawa perasaan",
+    category: "Indonesian Slangs",
+    pronunciation: "bah-per",
+    synonyms: ["emotional", "sensitive"],
+    examples: [
+      "Jangan baper, dia cuma bercanda kok.",
+      "Aku suka baper kalau denger lagu sedih."
+    ],
+    image: "https://i.pinimg.com/1200x/fa/4e/69/fa4e69d1da7b1edb44f76349691936a2.jpg"
+  },
+  { 
+    word: "mager",
+    indonesian: "malas gerak",
+    category: "Indonesian Slangs",
+    pronunciation: "mah-ger",
+    synonyms: ["lazy", "too tired to move"],
+    examples: [
+      "Mau keluar tapi mager banget.",
+      "Dia mager ngerjain tugas hari ini."
+    ],
+    image: "https://i.pinimg.com/1200x/cf/e5/c5/cfe5c5008b607e8d40ba9878402812ea.jpg"
+  },
+  { 
+    word: "kepo",
+    indonesian: "ingin tahu urusan orang lain",
+    category: "Indonesian Slangs",
+    pronunciation: "keh-po",
+    synonyms: ["nosy", "curious"],
+    examples: [
+      "Dia suka banget kepo soal kehidupan orang lain.",
+      "Jangan kepo deh, itu bukan urusanmu."
+    ],
+    image: "https://i.pinimg.com/736x/4a/cb/93/4acb93ca4584d9f9114c5869392b6a31.jpg"
+  },
+  { 
+    word: "bucin",
+    indonesian: "budak cinta",
+    category: "Indonesian Slangs",
+    pronunciation: "boo-chin",
+    synonyms: ["love-struck", "overly romantic"],
+    examples: [
+      "Dia rela ngelakuin apa aja buat pacarnya, bucin banget!",
+      "Kadang aku juga bucin sih, hehe."
+    ],
+    image: "https://i.pinimg.com/736x/8d/4c/2a/8d4c2a199fc8bc5286cfcfb295bf7d8a.jpg"
+  },
+  { 
+    word: "ngegas",
+    indonesian: "bersikap atau berbicara dengan emosi / marah",
+    category: "Indonesian Slangs",
+    pronunciation: "nguh-gas",
+    synonyms: ["angry", "snapping", "triggered"],
+    examples: [
+      "Santai aja, gak usah ngegas gitu dong.",
+      "Dia suka ngegas kalau dikritik."
+    ],
+    image: "https://i.pinimg.com/736x/e3/94/77/e394772f2e103293e472c4146a4f1438.jpg"
+  }
+];
+
+
+
+    const searchInput = document.getElementById("search");
+    const sortSelect = document.getElementById("sort");
+    const wordList = document.getElementById("wordList");
+    const modal = document.getElementById("modal");
+
+    function renderWords() {
+      const searchValue = searchInput.value.toLowerCase();
+      const sortOrder = sortSelect.value;
+
+      let filtered = words.filter(w =>
+        w.word.toLowerCase().includes(searchValue)
+      );
+
+      filtered.sort((a, b) =>
+        sortOrder === "asc"
+          ? a.word.localeCompare(b.word)
+          : b.word.localeCompare(a.word)
+      );
+
+      wordList.innerHTML = "";
+      filtered.forEach(w => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="word">${w.word}</div>
+          <div class="translation">(${w.indonesian})</div>
+          <img src="${w.image}" class="image" alt="${w.word}">
+          <div class="clue">${w.category}</div>
+        `;
+        card.addEventListener("click", () => openModal(w));
+        wordList.appendChild(card);
+      });
+    }
+
+    function openModal(data) {
+      document.getElementById("word").textContent = data.word.toUpperCase();
+      document.getElementById("category").textContent = data.category;
+      document.getElementById("pronounce").textContent = data.pronunciation;
+      document.getElementById("translation").textContent = data.indonesian.charAt(0).toUpperCase() + data.indonesian.slice(1);
+      document.getElementById("synonyms").textContent = data.synonyms.join(", ");
+      document.getElementById("modalImage").src = data.image;
+
+      const exampleList = document.getElementById("examples");
+      exampleList.innerHTML = "";
+      data.examples.forEach(ex => {
+        const li = document.createElement("li");
+        li.textContent = ex;
+        exampleList.appendChild(li);
+      });
+
+      modal.dataset.word = data.word;
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    function playAudio() {
+      const word = modal.dataset.word;
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = "en-US";
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    searchInput.addEventListener("input", renderWords);
+    sortSelect.addEventListener("change", renderWords);
+
+    renderWords();
+  </script>
+	<br>
+<a href="library.html"><img src="images/BACKTOWEB.png" width="375" height="200" alt=""/></a><!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-3.3.1.min.js"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/popper.min.js"></script> 
+<script src="js/bootstrap-4.3.1.js"></script>
+	</div>
+	
+  </body>
+</html>

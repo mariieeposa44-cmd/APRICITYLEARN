@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fill in the Blank Vocabulary Game 🍊</title>
+	<link rel="icon" type="image/x-icon" href="file:///C|/Users/Roy/Downloads/WEBSITE/images/websitesslogo.ico">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url(images/BACKGROUND%20APRICITY.png);
+      background-repeat: repeat;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    .game-container {
+      background-color: #ffe1b3; /* Softer orange card */
+      padding: 2rem 3rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 400px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      color: #e67e22;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      color: #d35400;
+    }
+
+    input {
+      padding: 0.6rem;
+      width: 80%;
+      font-size: 1rem;
+      border: 2px solid #f5b97f;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      margin: 0.5rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #ffa94d;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff922b;
+    }
+
+    .score, .timer {
+      font-weight: bold;
+      margin-top: 1rem;
+      color: #b35400;
+    }
+  </style>
+</head>
+<body>
+<audio autoplay="autoplay" loop="loop" >
+  <source src="GAME2.mp3" type="audio/mp3">
+</audio>
+<div class="game-container">
+  <h1>Fill in the Blank Vocabulary Game 🍊</h1>
+    <div class="question" id="question">Loading...</div>
+    <input type="text" id="answerInput" placeholder="Type the word here..." />
+    <div>
+      <button id="submitBtn">Submit</button>
+      <button id="skipBtn">Skip</button>
+      <button id="hintBtn">Hint</button>
+    </div>
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="timer">Time: <span id="timer">60</span>s</div>
+  </div>
+
+ <script>
+  // Questions organized from easy to hard, with sentences using the words
+  const questions = [
+    // Easy: Daily routine
+    { sentence: "I _____ every morning at 7 AM.", answer: "wake up" },
+    { sentence: "Don't forget to _____ your teeth after eating.", answer: "brush" },
+    { sentence: "I take a quick _____ before going to work.", answer: "shower" },
+    { sentence: "I need to buy some _____ at the store.", answer: "groceries" },
+    { sentence: "Running _____ is part of my daily life.", answer: "errands" },
+    { sentence: "My morning _____ includes coffee and breakfast.", answer: "routine" },
+
+    // School
+    { sentence: "I write with a _____ in class.", answer: "pen" },
+    { sentence: "My _____ helps me with homework.", answer: "classmate" },
+    { sentence: "The teacher gave us an _____ to complete.", answer: "assignment" },
+    { sentence: "The _____ of the school is very strict.", answer: "principal" },
+    { sentence: "The _____ includes math, science, and history.", answer: "curriculum" },
+    { sentence: "I tend to _____ on my projects.", answer: "procrastinate" },
+
+    // Food
+    { sentence: "Many people eat _____ as a staple food.", answer: "rice" },
+    { sentence: "I like to eat _____ with butter.", answer: "bread" },
+    { sentence: "A quick _____ between meals is good.", answer: "snack" },
+    { sentence: "The dish has a _____ flavor.", answer: "savory" },
+    { sentence: "Italian _____ is famous worldwide.", answer: "cuisine" },
+    { sentence: "Kimchi is a _____ food in Korea.", answer: "fermented" },
+
+    // Weather
+    { sentence: "It's a _____ day, perfect for a picnic.", answer: "sunny" },
+    { sentence: "The sky is _____ with rain coming.", answer: "cloudy" },
+    { sentence: "It's very _____ today, blowing leaves around.", answer: "windy" },
+    { sentence: "We heard a loud _____ last night.", answer: "thunderstorm" },
+    { sentence: "The air feels _____ after the rain.", answer: "humid" },
+    { sentence: "A light _____ started falling.", answer: "drizzle" },
+
+    // Animals
+    { sentence: "My pet _____ likes to sleep all day.", answer: "cat" },
+    { sentence: "A _____ is known as man's best friend.", answer: "dog" },
+    { sentence: "The _____ hops around the garden.", answer: "rabbit" },
+    { sentence: "The _____ has beautiful colorful feathers.", answer: "peacock" },
+    { sentence: "A _____ can change its color.", answer: "chameleon" },
+    { sentence: "The _____ lives near water in Africa.", answer: "hippopotamus" },
+
+    // Places
+    { sentence: "Children play in the _____ on weekends.", answer: "park" },
+    { sentence: "I buy fruits at the local _____.", answer: "market" },
+    { sentence: "People go to the _____ when they are sick.", answer: "hospital" },
+    { sentence: "Fresh bread comes from the _____.", answer: "bakery" },
+    { sentence: "Be careful at the _____ when crossing the road.", answer: "intersection" },
+    { sentence: "Many families live in the quiet _____.", answer: "suburb" },
+
+    // Verbs
+    { sentence: "I like to _____ in the morning.", answer: "run" },
+    { sentence: "The child can _____ very high.", answer: "jump" },
+    { sentence: "Workers _____ houses with bricks.", answer: "build" },
+    { sentence: "Please _____ so we don't wake the baby.", answer: "whisper" },
+    { sentence: "Teachers _____ students to do their best.", answer: "encourage" },
+    { sentence: "She will _____ any obstacle in her path.", answer: "overcome" },
+
+    // Adjectives
+    { sentence: "The _____ mouse hid in the corner.", answer: "small" },
+    { sentence: "The sun is very _____ today.", answer: "bright" },
+    { sentence: "The _____ child asked many questions.", answer: "curious" },
+    { sentence: "The dancer moved in a _____ way.", answer: "graceful" },
+    { sentence: "A _____ person never gives up.", answer: "determined" },
+    { sentence: "The _____ lights lit up the night.", answer: "dazzling" },
+
+    // Idioms (Harder)
+    { sentence: "_____! I hope your play goes well.", answer: "break a leg" },
+    { sentence: "I'm tired, time to _____ for the night.", answer: "hit the sack" },
+    { sentence: "Learning English is a _____.", answer: "piece of cake" },
+    { sentence: "I'm feeling _____ today.", answer: "under the weather" },
+    { sentence: "Don't _____ about the secret.", answer: "spill the beans" },
+    { sentence: "Good luck comes only _____.", answer: "once in a blue moon" },
+
+    // Slang (Hardest)
+    { sentence: "That movie was _____, really good!", answer: "mantul" },
+    { sentence: "I'm feeling _____ today, no energy.", answer: "mager" },
+    { sentence: "Don't get _____ if I ignore you.", answer: "baper" },
+    { sentence: "I'm just _____ at home, doing nothing.", answer: "gabut" },
+    { sentence: "That's so _____, not funny at all.", answer: "gaje" },
+    { sentence: "Stop being _____, it's none of your business.", answer: "kepo" },
+    { sentence: "That outfit is _____.", answer: "cool" },
+    { sentence: "Just _____ and relax.", answer: "chill" },
+    { sentence: "Hey _____, what's up?", answer: "bro" },
+    { sentence: "_____ , that's true!", answer: "no cap" },
+    { sentence: "He _____ me after the date.", answer: "ghosted" },
+    { sentence: "Don't be _____, it's not a big deal.", answer: "salty" }
+  ];
+
+  // 🎲 Acak urutan pertanyaan saat halaman dibuka
+  questions.sort(() => Math.random() - 0.5);
+
+  let currentQuestionIndex = 0;
+  let score = 0;
+  let time = 60;
+  let timerInterval;
+
+  const questionElement = document.getElementById("question");
+  const answerInput = document.getElementById("answerInput");
+  const scoreElement = document.getElementById("score");
+  const timerElement = document.getElementById("timer");
+
+  function loadQuestion() {
+    if (currentQuestionIndex < questions.length) {
+      questionElement.textContent = questions[currentQuestionIndex].sentence;
+      answerInput.value = "";
+      answerInput.focus();
+    } else {
+      clearInterval(timerInterval);
+      alert(`🎉 Game Over! Final Score: ${score}`);
+      resetGame();
+    }
+  }
+
+  function checkAnswer() {
+    const userAnswer = answerInput.value.toLowerCase().trim();
+    const correctAnswer = questions[currentQuestionIndex].answer.toLowerCase();
+    if (userAnswer === correctAnswer) {
+      score += 10;
+      scoreElement.textContent = score;
+      currentQuestionIndex++;
+      loadQuestion();
+    } else {
+      answerInput.value = "";
+      answerInput.placeholder = "Try again...";
+    }
+  }
+
+  function skipQuestion() {
+    currentQuestionIndex++;
+    loadQuestion();
+  }
+
+  function giveHint() {
+    const correctAnswer = questions[currentQuestionIndex].answer;
+    alert(`Hint: The word starts with "${correctAnswer[0].toUpperCase()}"`);
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      time--;
+      timerElement.textContent = time;
+      if (time <= 0) {
+        clearInterval(timerInterval);
+        alert(`⏰ Time's up! Final Score: ${score}`);
+        resetGame();
+      }
+    }, 1000);
+  }
+
+  function resetGame() {
+    currentQuestionIndex = 0;
+    score = 0;
+    time = 60;
+    scoreElement.textContent = score;
+    timerElement.textContent = time;
+    questions.sort(() => Math.random() - 0.5); // 🎲 Acak lagi saat restart
+    loadQuestion();
+    startTimer();
+  }
+
+  document.getElementById("submitBtn").addEventListener("click", checkAnswer);
+  document.getElementById("skipBtn").addEventListener("click", skipQuestion);
+  document.getElementById("hintBtn").addEventListener("click", giveHint);
+
+  // Allow Enter key to submit
+  answerInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      checkAnswer();
+    }
+  });
+
+  loadQuestion();
+  startTimer();
+</script>
+
+	<table width="600">
+  <tbody>
+    <tr>
+      <td align="center" valign="middle"><a href="game.html"><img src="images/BACKTOWEB.png" width="375" height="200" alt=""/></a></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

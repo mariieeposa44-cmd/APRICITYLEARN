@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food and Drinks Vocabulary</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-image: url(images/BACKGROUND%20APRICITY.png);
+    background-repeat: repeat;
+      text-align: center;
+      padding: 40px;
+      color: #4b2e05;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: 900;
+      margin-bottom: 25px;
+      color: #d96500;
+      text-shadow: 1px 1px #fff;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: 2px solid #d97b00;
+      width: 250px;
+      outline: none;
+      font-size: 1em;
+      background: #fff;
+    }
+
+    select {
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #d97b00;
+      font-size: 1em;
+      background: #fff;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      justify-items: center;
+    }
+
+    .card {
+      border: 2px solid #d97b00;
+      border-radius: 15px;
+      background-color: #ffe4c4;
+      padding: 15px;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+.fade-in-image { animation: fadeIn 2.5s; }
+		@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+    .card:hover {
+      background: #ffcf91;
+      transform: scale(1.05);
+    }
+
+    .word {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #a35400;
+      margin-bottom: 3px;
+    }
+
+    .translation {
+      font-size: 0.9em;
+      color: #6b3e00;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+
+    .image {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-bottom: 5px;
+    }
+
+    .clue {
+      font-size: 0.8em;
+      color: #4b2e05;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: #fffdf7;
+      color: #2d1b00;
+      padding: 30px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+
+    .modal-content img {
+      width: 40%;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 4px solid #d97b00;
+    }
+
+    .modal-text {
+      text-align: left;
+      flex: 1;
+    }
+
+    .modal h2 {
+      font-size: 2.5em;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: #d96500;
+    }
+
+    .modal h3 {
+      margin: 10px 0 5px;
+      color: #6b3e00;
+    }
+
+    .modal .pronounce {
+      background: #e3e0c8;
+      padding: 3px 8px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .modal strong {
+      color: #a35400;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <img src="3.png" width="650" height="275" alt=""/>
+	<div class="fade-in-image">
+<div class="controls">
+  <input type="text" id="search" placeholder="Search words..." />
+    <select id="sort">
+      <option value="asc">Sort A–Z</option>
+      <option value="desc">Sort Z–A</option>
+    </select>
+</div>
+
+  <div class="cards" id="wordList"></div>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-text">
+        <div class="close-btn" onclick="closeModal()">✕</div>
+        <p><small>category: <span id="category"></span></small></p>
+        <h2 id="word"></h2>
+        <p><i id="pronounce"></i> <span class="pronounce" onclick="playAudio()">🔊 audio</span></p>
+        <h3 id="translation"></h3>
+
+        <h4>Synonyms:</h4>
+        <p id="synonyms"></p>
+
+        <h4>Example sentences:</h4>
+        <ul id="examples"></ul>
+      </div>
+      <img id="modalImage" src="" alt="Word image">
+    </div>
+  </div>
+
+<script>
+    const words = [
+      { 
+    word: "beverage",
+    indonesian: "minuman",
+    category: "Food and Drinks",
+    pronunciation: "ˈbev(ə)rij",
+    synonyms: ["drink", "refreshment", "liquor", "juice"],
+    examples: [
+      "Would you like a cold beverage?",
+      "The restaurant offers a wide range of beverages."
+    ],
+    image: "https://i.pinimg.com/736x/79/6c/34/796c34906c9111f02f41a319298a261b.jpg"
+  },
+  { 
+    word: "rice",
+    indonesian: "nasi",
+    category: "Food and Drinks",
+    pronunciation: "raɪs",
+    synonyms: ["grain", "staple food"],
+    examples: [
+      "Rice is a common dish in Asia.",
+      "She cooked a bowl of steamed rice."
+    ],
+    image: "https://i.pinimg.com/736x/0a/ec/56/0aec56a140bb84abc60059205aae48c5.jpg"
+  },
+  { 
+    word: "bread",
+    indonesian: "roti",
+    category: "Food and Drinks",
+    pronunciation: "brɛd",
+    synonyms: ["loaf", "baked goods"],
+    examples: [
+      "He spread butter on the bread.",
+      "Fresh bread smells wonderful."
+    ],
+    image: "https://i.pinimg.com/1200x/2f/53/3b/2f533b488cecd76eb6f4fe9941f8885f.jpg"
+  },
+  { 
+    word: "snack",
+    indonesian: "camilan",
+    category: "Food and Drinks",
+    pronunciation: "snæk",
+    synonyms: ["light meal", "treat"],
+    examples: [
+      "She had a snack after school.",
+      "Popcorn is my favorite movie snack."
+    ],
+    image: "https://i.pinimg.com/736x/12/3d/88/123d88484466dadcb6f2a4ba9848bd6e.jpg"
+  },
+  { 
+    word: "cuisine",
+    indonesian: "masakan",
+    category: "Food and Drinks",
+    pronunciation: "kwɪˈzin",
+    synonyms: ["cooking style", "gastronomy"],
+    examples: [
+      "Italian cuisine is popular worldwide.",
+      "She specializes in French cuisine."
+    ],
+    image: "https://i.pinimg.com/736x/81/47/e4/8147e4bccefce5ee8ec6de324338e9f7.jpg"
+  },
+  { 
+    word: "savory",
+    indonesian: "gurih",
+    category: "Food and Drinks",
+    pronunciation: "ˈseɪvəri",
+    synonyms: ["flavorful", "tasty", "spicy"],
+    examples: [
+      "I prefer savory dishes over sweet ones.",
+      "The soup had a rich and savory flavor."
+    ],
+    image: "https://i.pinimg.com/736x/d6/14/a5/d614a53416e2d374b6717a96a86a6545.jpg"
+  }
+];
+    const searchInput = document.getElementById("search");
+    const sortSelect = document.getElementById("sort");
+    const wordList = document.getElementById("wordList");
+    const modal = document.getElementById("modal");
+
+    function renderWords() {
+      const searchValue = searchInput.value.toLowerCase();
+      const sortOrder = sortSelect.value;
+
+      let filtered = words.filter(w =>
+        w.word.toLowerCase().includes(searchValue)
+      );
+
+      filtered.sort((a, b) =>
+        sortOrder === "asc"
+          ? a.word.localeCompare(b.word)
+          : b.word.localeCompare(a.word)
+      );
+
+      wordList.innerHTML = "";
+      filtered.forEach(w => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="word">${w.word}</div>
+          <div class="translation">(${w.indonesian})</div>
+          <img src="${w.image}" class="image" alt="${w.word}">
+          <div class="clue">${w.category}</div>
+        `;
+        card.addEventListener("click", () => openModal(w));
+        wordList.appendChild(card);
+      });
+    }
+
+    function openModal(data) {
+      document.getElementById("word").textContent = data.word.toUpperCase();
+      document.getElementById("category").textContent = data.category;
+      document.getElementById("pronounce").textContent = data.pronunciation;
+      document.getElementById("translation").textContent = data.indonesian.charAt(0).toUpperCase() + data.indonesian.slice(1);
+      document.getElementById("synonyms").textContent = data.synonyms.join(", ");
+      document.getElementById("modalImage").src = data.image;
+
+      const exampleList = document.getElementById("examples");
+      exampleList.innerHTML = "";
+      data.examples.forEach(ex => {
+        const li = document.createElement("li");
+        li.textContent = ex;
+        exampleList.appendChild(li);
+      });
+
+      modal.dataset.word = data.word;
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    function playAudio() {
+      const word = modal.dataset.word;
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = "en-US";
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    searchInput.addEventListener("input", renderWords);
+    sortSelect.addEventListener("change", renderWords);
+
+    renderWords();
+  </script>
+	<br>
+<a href="library.html"><img src="images/BACKTOWEB.png" width="375" height="200" alt=""/></a><!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-3.3.1.min.js"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/popper.min.js"></script> 
+<script src="js/bootstrap-4.3.1.js"></script>
+	</div>
+	
+  </body>
+</html>

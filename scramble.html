@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Scramble Game</title>
+  <link rel="icon" type="image/x-icon" href="images/websitesslogo.ico">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url(images/BACKGROUND%20APRICITY.png);
+      background-repeat: repeat;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .game-container {
+      background-color: #ffe1b3;
+      padding: 2rem 3rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 350px;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      color: #e67e22;
+    }
+
+    .scrambled-word {
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      margin: 1rem 0;
+      color: #d35400;
+    }
+
+    input {
+      padding: 0.6rem;
+      width: 80%;
+      font-size: 1rem;
+      border: 2px solid #f5b97f;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      margin: 0.4rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #ffa94d;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, opacity 0.3s;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #ff922b;
+    }
+
+    button:disabled {
+      background-color: #f3c38a;
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .score, .timer, .hints-left {
+      font-weight: bold;
+      margin-top: 0.8rem;
+      color: #b35400;
+    }
+
+    .back-button {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .back-button img {
+      width: 260px;
+      max-width: 90%;
+      height: auto;
+      transition: transform 0.25s ease;
+    }
+
+    .back-button img:hover {
+      transform: translateY(-6px);
+    }
+  </style>
+</head>
+
+<body>
+
+<audio autoplay loop>
+  <source src="GAME1.mp3" type="audio/mp3">
+</audio>
+
+<div class="game-container">
+  <h1>Word Scramble 🍳</h1>
+
+  <div class="scrambled-word" id="scrambledWord">Loading...</div>
+
+  <input
+    type="text"
+    id="guessInput"
+    placeholder="Your guess..."
+    autocomplete="off"
+  />
+
+  <div>
+    <button id="submitBtn">Submit</button>
+    <button id="skipBtn">Skip</button>
+    <button id="hintBtn">Hint</button>
+  </div>
+
+  <div class="hints-left">
+    Hints left: <span id="hintsLeft">3</span>
+  </div>
+
+  <div class="score">
+    Score: <span id="score">0</span>
+  </div>
+
+  <div class="timer">
+    Time: <span id="timer">60</span>s
+  </div>
+</div>
+
+<div class="back-button">
+  <a href="game.html">
+    <img src="images/BACKTOWEB.png" alt="Back to Apricity">
+  </a>
+</div>
+
+<script>
+  const words = [
+    { word: "wake up", category: "Daily Routine" },
+    { word: "brush", category: "Daily Routine" },
+    { word: "shower", category: "Daily Routine" },
+    { word: "groceries", category: "Daily Routine" },
+    { word: "errands", category: "Daily Routine" },
+    { word: "routine", category: "Daily Routine" },
+
+    { word: "pen", category: "School" },
+    { word: "classmate", category: "School" },
+    { word: "assignment", category: "School" },
+    { word: "principal", category: "School" },
+    { word: "curriculum", category: "School" },
+    { word: "procrastinate", category: "School" },
+
+    { word: "rice", category: "Food" },
+    { word: "bread", category: "Food" },
+    { word: "snack", category: "Food" },
+    { word: "savory", category: "Food" },
+    { word: "cuisine", category: "Food" },
+    { word: "fermented", category: "Food" },
+
+    { word: "sunny", category: "Weather" },
+    { word: "cloudy", category: "Weather" },
+    { word: "windy", category: "Weather" },
+    { word: "thunderstorm", category: "Weather" },
+    { word: "humid", category: "Weather" },
+    { word: "drizzle", category: "Weather" },
+
+    { word: "cat", category: "Animals" },
+    { word: "dog", category: "Animals" },
+    { word: "rabbit", category: "Animals" },
+    { word: "bird", category: "Animals" },
+    { word: "elephant", category: "Animals" },
+    { word: "fish", category: "Animals" },
+
+    { word: "break a leg", category: "Idioms" },
+    { word: "piece of cake", category: "Idioms" },
+    { word: "under the weather", category: "Idioms" },
+    { word: "spill the beans", category: "Idioms" },
+    { word: "once in a blue moon", category: "Idioms" }
+  ];
+
+  let currentWord = {};
+  let scrambled = "";
+  let score = 0;
+  let time = 60;
+  let timerInterval;
+  let hintCount = 0;
+  const maxHints = 3;
+
+  const scrambledWordElement = document.getElementById("scrambledWord");
+  const guessInput = document.getElementById("guessInput");
+  const scoreElement = document.getElementById("score");
+  const timerElement = document.getElementById("timer");
+  const hintBtn = document.getElementById("hintBtn");
+  const hintsLeftElement = document.getElementById("hintsLeft");
+
+  function shuffleWord(word) {
+    return word.split("").sort(() => Math.random() - 0.5).join("");
+  }
+
+  function updateHintsUI() {
+    hintsLeftElement.textContent = maxHints - hintCount;
+    hintBtn.disabled = hintCount >= maxHints;
+  }
+
+  function newWord() {
+    currentWord = words[Math.floor(Math.random() * words.length)];
+    scrambled = shuffleWord(currentWord.word);
+    scrambledWordElement.textContent = scrambled;
+    guessInput.value = "";
+    guessInput.focus();
+    hintCount = 0;
+    updateHintsUI();
+  }
+
+  function checkGuess() {
+    const guess = guessInput.value.toLowerCase().trim();
+    if (!guess) return;
+
+    if (guess === currentWord.word.toLowerCase()) {
+      score += 10;
+      scoreElement.textContent = score;
+      newWord();
+    } else {
+      guessInput.value = "";
+    }
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      time--;
+      timerElement.textContent = time;
+
+      if (time <= 0) {
+        clearInterval(timerInterval);
+        alert(`⏰ Time's up! Final Score: ${score}`);
+        resetGame();
+      }
+    }, 1000);
+  }
+
+  function resetGame() {
+    score = 0;
+    time = 60;
+    scoreElement.textContent = score;
+    timerElement.textContent = time;
+    newWord();
+    startTimer();
+  }
+
+  document.getElementById("submitBtn").addEventListener("click", checkGuess);
+  document.getElementById("skipBtn").addEventListener("click", newWord);
+
+  guessInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      checkGuess();
+    }
+  });
+
+  hintBtn.addEventListener("click", () => {
+    if (hintCount < maxHints) {
+      hintCount++;
+
+      let message = "";
+      if (hintCount === 1) {
+        message = `Category: ${currentWord.category}`;
+      } else if (hintCount === 2) {
+        message = `First letter: ${currentWord.word[0].toUpperCase()}`;
+      } else if (hintCount === 3) {
+        message = `Word length: ${currentWord.word.length}`;
+      }
+
+      alert(`Hint ${hintCount}/3\n${message}`);
+      updateHintsUI();
+    } else {
+      score = Math.max(0, score - 5);
+      scoreElement.textContent = score;
+      alert("⚠️ No more hints! You lost 5 points.");
+    }
+  });
+
+  newWord();
+  startTimer();
+</script>
+
+</body>
+</html>
+
+
+

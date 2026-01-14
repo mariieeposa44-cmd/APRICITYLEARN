@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>APRICITY!</title>
+  <link rel="icon" type="image/x-icon" href="images/websitesslogo.ico">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="css/bootstrap-4.3.1.css">
+
+  <style>
+    /* ===============================
+       BASE
+    =============================== */
+    body {
+      background-image: url("images/BACKGROUND APRICITY.png");
+      background-repeat: repeat;
+      margin: 0;
+      padding: 0;
+    }
+
+    .fade-in {
+      animation: fadeIn 1.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ===============================
+       NAVIGATION (MATCHES INDEX)
+    =============================== */
+    .scrapbook-nav {
+      padding: 30px 0;
+    }
+
+    .logo-img {
+      max-width: 180px;
+    }
+
+    .nav-img {
+      max-width: 160px;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-img:hover {
+      transform: scale(1.1) rotate(-1deg);
+    }
+
+    @media (max-width: 768px) {
+      .logo-img { max-width: 120px; }
+      .nav-img { max-width: 90px; }
+    }
+
+    /* ===============================
+       HEADER
+    =============================== */
+    .game-title {
+      max-width: 950px;
+      margin: 20px auto 10px;
+      display: block;
+    }
+
+    .game-subtitle {
+      font-family: Georgia, serif;
+      font-size: 32px;
+      font-weight: bold;
+      color: #cf5b2d;
+      text-align: center;
+      margin-bottom: 70px;
+    }
+
+    /* ===============================
+       GAME GRID
+    =============================== */
+    .game-section {
+      margin-bottom: 90px;
+    }
+
+    .game-card {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .game-card img {
+      max-width: 100%;
+      height: auto;
+      transition: transform 0.25s ease;
+    }
+
+    .game-card img:hover {
+      transform: translateY(-8px);
+    }
+
+    /* scrapbook looseness */
+    .offset-low  { transform: translateY(12px); }
+    .offset-mid  { transform: translateY(-6px); }
+    .offset-high { transform: translateY(18px); }
+
+    /* ===============================
+       FOOTER
+    =============================== */
+    .footer-img {
+      max-width: 900px;
+      margin: 80px auto 40px;
+      display: block;
+    }
+  </style>
+
+  <!-- ===============================
+       ROLLOVER SCRIPT (UNCHANGED)
+  =============================== -->
+  <script type="text/javascript">
+    function MM_swapImgRestore() {
+      var i,x,a=document.MM_sr;
+      for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+    }
+
+    function MM_preloadImages() {
+      var d=document;
+      if(d.images){
+        if(!d.MM_p) d.MM_p=new Array();
+        var i,j=d.MM_p.length,a=MM_preloadImages.arguments;
+        for(i=0; i<a.length; i++)
+          if (a[i].indexOf("#")!=0){
+            d.MM_p[j]=new Image;
+            d.MM_p[j++].src=a[i];
+          }
+      }
+    }
+
+    function MM_findObj(n, d) {
+      var p,i,x;
+      if(!d) d=document;
+      if((p=n.indexOf("?"))>0&&parent.frames.length){
+        d=parent.frames[n.substring(p+1)].document;
+        n=n.substring(0,p);
+      }
+      if(!(x=d[n])&&d.all) x=d.all[n];
+      for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+      for(i=0;!x&&d.layers&&i<d.layers.length;i++)
+        x=MM_findObj(n,d.layers[i].document);
+      if(!x && d.getElementById) x=d.getElementById(n);
+      return x;
+    }
+
+    function MM_swapImage() {
+      var i,j=0,x,a=MM_swapImage.arguments;
+      document.MM_sr=new Array;
+      for(i=0;i<(a.length-2);i+=3)
+        if ((x=MM_findObj(a[i]))!=null){
+          document.MM_sr[j++]=x;
+          if(!x.oSrc) x.oSrc=x.src;
+          x.src=a[i+2];
+        }
+    }
+  </script>
+</head>
+
+<body class="fade-in"
+  onLoad="MM_preloadImages(
+    'images/home.on.png',
+    'images/About.on.png',
+    'images/library.on.png',
+    'images/Games.on.png',
+    'images/2.png',
+    'images/4.png',
+    'images/6.png'
+  )">
+
+<!-- ===============================
+     NAVIGATION (INDEX STYLE)
+=============================== -->
+<div class="container scrapbook-nav">
+  <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center gap-4">
+
+    <a href="index.html">
+      <img src="images/logo.png" class="logo-img" alt="Apricity Logo">
+    </a>
+
+    <div class="d-flex align-items-center justify-content-center gap-3 flex-wrap">
+      <a href="index.html"><img src="images/home.off.png" class="nav-img" alt=""></a>
+      <a href="about.html"><img src="images/About.off.png" class="nav-img" alt=""></a>
+      <a href="library.html"><img src="images/library.off.png" class="nav-img" alt=""></a>
+      <a href="game.html"><img src="images/Games.off.png" class="nav-img" alt=""></a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===============================
+     HEADER
+=============================== -->
+<img src="LIBRARBT (1).png" class="game-title" alt="">
+<div class="game-subtitle">
+  Which games do you want to play today?
+</div>
+
+<!-- ===============================
+     GAMES (ROLLovers PRESERVED)
+=============================== -->
+<div class="container game-section">
+  <div class="row justify-content-center">
+
+    <div class="col-lg-4 col-md-6 col-12 game-card offset-low">
+      <a href="guess.html"
+         onMouseOut="MM_swapImgRestore()"
+         onMouseOver="MM_swapImage('game1','','images/2.png',1)">
+        <img src="images/1.png" id="game1" alt="">
+      </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12 game-card offset-mid">
+      <a href="scramble.html"
+         onMouseOut="MM_swapImgRestore()"
+         onMouseOver="MM_swapImage('game2','','images/4.png',1)">
+        <img src="images/3.png" id="game2" alt="">
+      </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12 game-card offset-high">
+      <a href="fillintheblank.html"
+         onMouseOut="MM_swapImgRestore()"
+         onMouseOver="MM_swapImage('game3','','images/6.png',1)">
+        <img src="images/5.png" id="game3" alt="">
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===============================
+     FOOTER
+=============================== -->
+<img src="images/foooter.png" class="footer-img" alt="" usemap="#Map">
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap-4.3.1.js"></script>
+
+<map name="Map">
+  <area shape="rect" coords="34,50,209,99" href="https://www.youtube.com/@apricitywebsite">
+  <area shape="rect" coords="247,42,314,105" href="https://www.instagram.com/luvodii_/">
+  <area shape="rect" coords="562,42,618,113" href="https://forms.gle/RMuFiAs8HRSfZt1e6">
+</map>
+
+</body>
+</html>

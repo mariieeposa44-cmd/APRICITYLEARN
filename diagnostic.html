@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="file:///C|/Users/Roy/Downloads/WEBSITE/images/websitesslogo.ico">
+	<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <title>Apricity's Vocabulary Diagnostic Test</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+    background-image: url(images/BACKGROUND%20APRICITY.png);
+    background-repeat: repeat;
+        }
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #e3a26d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d17a4b;
+        }
+        #result {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+		.fade-in-image { animation: fadeIn 2.5s; }
+		@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+    </style>
+</head>
+<body>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div class="fade-in-image">
+	<table width="600">
+  <tbody>
+    <tr>
+      <td align="center" valign="middle"><a href="index.html"><img src="images/BACKTOWEB.png" width="375" height="200" alt=""/></a></td>
+    </tr>
+  </tbody>
+</table>
+	<br>
+	<br>
+		
+    <div class="quiz-container">
+        <h1>🧠 Vocabulary Diagnostic Test</h1>
+        <div id="quiz">
+            <!-- Questions will be dynamically loaded here -->
+        </div>
+        <div class="buttons">
+            <button id="prevBtn" class="hidden">Back</button>
+            <button id="nextBtn">Next</button>
+            <button id="submitBtn" class="hidden">Submit</button>
+        </div>
+        <div id="result" class="hidden"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "1. The word “hungry” means:",
+                options: ["a) Feeling full", "b) Feeling tired", "c) Wanting to eat", "d) Wanting to sleep"],
+                correct: 2
+            },
+            {
+                question: "2. The word “cold” is the opposite of:",
+                options: ["a) Hot", "b) Bright", "c) Tall", "d) Quiet"],
+                correct: 0
+            },
+            {
+                question: "3. To “clean” something means to:",
+                options: ["a) Make it dirty", "b) Make it new", "c) Make it neat and free of dirt", "d) Paint it"],
+                correct: 2
+            },
+            {
+                question: "4. A “teacher” is someone who:",
+                options: ["a) Studies at school", "b) Sells food", "c) Helps students learn", "d) Fixes machines"],
+                correct: 2
+            },
+            {
+                question: "5. The word “beautiful” is similar in meaning to:",
+                options: ["a) Ugly", "b) Pretty", "c) Tall", "d) Noisy"],
+                correct: 1
+            },
+            {
+                question: "6. To “apologize” means to:",
+                options: ["a) Say thank you", "b) Say sorry", "c) Say hello", "d) Say goodbye"],
+                correct: 1
+            },
+            {
+                question: "7. If something is “valuable,” it is:",
+                options: ["a) Cheap", "b) Unimportant", "c) Worth a lot", "d) Old and broken"],
+                correct: 2
+            },
+            {
+                question: "8. The word “confident” describes someone who:",
+                options: ["a) Believes in themselves", "b) Doubts their ability", "c) Is shy around others", "d) Refuses to try"],
+                correct: 0
+            },
+            {
+                question: "9. The word “predict” means to:",
+                options: ["a) Change the future", "b) Control events", "c) Guess what will happen", "d) Forget what happened"],
+                correct: 2
+            },
+            {
+                question: "10. A “dilemma” is:",
+                options: ["a) A serious problem or difficult choice", "b) A simple decision", "c) A funny situation", "d) A small mistake"],
+                correct: 0
+            },
+            {
+                question: "11. Someone who is “pragmatic” is:",
+                options: ["a) Dreamy and unrealistic", "b) Practical and realistic", "c) Loud and emotional", "d) Cold and heartless"],
+                correct: 1
+            },
+            {
+                question: "12. The word “resilient” means:",
+                options: ["a) Easily broken", "b) Quick to recover from difficulty", "c) Unwilling to change", "d) Full of energy"],
+                correct: 1
+            },
+            {
+                question: "13. If something is “inevitable,” it is:",
+                options: ["a) Avoidable", "b) Uncertain", "c) Impossible to stop", "d) Unnecessary"],
+                correct: 2
+            },
+            {
+                question: "14. A “metaphor” is:",
+                options: ["a) A direct comparison using “like” or “as”", "b) A word that sounds the same but has different meaning", "c) A figure of speech comparing two unlike things", "d) A repetition of consonant sounds"],
+                correct: 2
+            },
+            {
+                question: "15. The word “altruistic” describes a person who:",
+                options: ["a) Thinks only about themselves", "b) Helps others selflessly", "c) Lies to make others happy", "d) Avoids helping anyone"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = new Array(questions.length).fill(null);
+
+        const quizDiv = document.getElementById('quiz');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultDiv = document.getElementById('result');
+
+        function showQuestion(index) {
+            quizDiv.innerHTML = `
+                <div class="question">
+                    <p>${questions[index].question}</p>
+                    <div class="options">
+                        ${questions[index].options.map((option, i) => `
+                            <label>
+                                <input type="radio" name="q${index}" value="${i}" ${answers[index] === i ? 'checked' : ''}>
+                                ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            prevBtn.classList.toggle('hidden', index === 0);
+            nextBtn.classList.toggle('hidden', index === questions.length - 1);
+            submitBtn.classList.toggle('hidden', index !== questions.length - 1);
+        }
+
+        function saveAnswer() {
+            const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+            if (selected) {
+                answers[currentQuestion] = parseInt(selected.value);
+            }
+        }
+
+        function calculateScore() {
+            return answers.reduce((score, answer, index) => {
+                return answer === questions[index].correct ? score + 1 : score;
+            }, 0);
+        }
+
+        function showResult(score) {
+            let level;
+            if (score >= 13) level = "Advanced (C1–C2)";
+            else if (score >= 9) level = "Upper Intermediate (B2)";
+            else if (score >= 6) level = "Intermediate (B1)";
+            else if (score >= 3) level = "Elementary (A2)";
+            else level = "Beginner (A1)";
+
+            resultDiv.innerHTML = `
+                <h2>Your Score: ${score}/15</h2>
+                <p>Level: ${level}</p>
+                <p>✅ Score Guide:</p>
+                <ul>
+                    <li>13–15 correct: Advanced (C1–C2)</li>
+                    <li>9–12 correct: Upper Intermediate (B2)</li>
+                    <li>6–8 correct: Intermediate (B1)</li>
+                    <li>3–5 correct: Elementary (A2)</li>
+                    <li>0–2 correct: Beginner (A1)</li>
+                </ul>
+            `;
+            resultDiv.classList.remove('hidden');
+            quizDiv.classList.add('hidden');
+            prevBtn.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            submitBtn.classList.add('hidden');
+        }
+
+        prevBtn.addEventListener('click', () => {
+            saveAnswer();
+            currentQuestion--;
+            showQuestion(currentQuestion);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            saveAnswer();
+            currentQuestion++;
+            showQuestion(currentQuestion);
+        });
+
+        submitBtn.addEventListener('click', () => {
+            saveAnswer();
+            const score = calculateScore();
+            showResult(score);
+        });
+
+        // Initialize
+        showQuestion(currentQuestion);
+    </script>
+	<br>
+	<br>
+	<br>
+	
+	</div>
+</body>
+</html>
